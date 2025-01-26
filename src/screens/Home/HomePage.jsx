@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 // Dummy data for loan categories
 const loanCategories = [
@@ -38,10 +39,7 @@ export default function HomePage() {
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
   const [loanAmount, setLoanAmount] = useState("");
   const [loanPeriod, setLoanPeriod] = useState("");
-
- 
-
-  
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   // Handle loan category and subcategory selection
   const handleCategoryChange = (e) => {
@@ -61,15 +59,8 @@ export default function HomePage() {
   };
 
   const handleModalSubmit = async () => {
-    if (
-      !name ||
-      !email ||
-      !guarantor1.name ||
-      !guarantor1.email ||
-      !guarantor2.name ||
-      !guarantor2.email
-    ) {
-      setResponseMessage("Please fill in all fields.");
+    if (!selectedCategory || !selectedSubcategory || !loanAmount || !loanPeriod) {
+      alert("Please fill in all fields.");
       return;
     }
 
@@ -78,31 +69,35 @@ export default function HomePage() {
       subcategory: selectedSubcategory,
       amount: loanAmount,
       loanPeriod: loanPeriod,
-      name,
-      email,
-      guarantor1,
-      guarantor2,
     };
 
-    try {
-      const response = await fetch("http://localhost:5000/api/v1/loans", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(loanData),
-      });
+    // Save loan data in localStorage
+    localStorage.setItem("loanData", JSON.stringify(loanData));
 
-      if (response.ok) {
-        const data = await response.json();
-        setResponseMessage(`Loan request successfully submitted. ID: ${data.loan._id}`);
-        setShowModal(false);
-      } else {
-        setResponseMessage("Failed to submit the loan request. Please try again.");
-      }
-    } catch (error) {
-      setResponseMessage("Error occurred while submitting the request.");
-    }
+        navigate("/register");
+
+
+    // try {
+    //   const response = await fetch("http://localhost:5000/api/v1/loans", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(loanData),
+    //   });
+
+    //   if (response.ok) {
+    //     const data = await response.json();
+    //     alert(`Loan request successfully submitted. ID: ${data.loan._id}`);
+        
+    //     // Navigate to the registration page after loan submission
+    //     navigate("/register");
+    //   } else {
+    //     alert("Failed to submit the loan request. Please try again.");
+    //   }
+    // } catch (error) {
+    //   alert("Error occurred while submitting the request.");
+    // }
   };
 
   return (
@@ -196,20 +191,15 @@ export default function HomePage() {
           </div>
         )}
 
-
-        
-
         <div className="mt-6">
           <button
-            onClick={() => setShowModal(true)}
+            onClick={handleModalSubmit}
             className="w-full py-3 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
           >
             Submit Loan Request
           </button>
         </div>
       </div>
-
-
     </div>
   );
 }

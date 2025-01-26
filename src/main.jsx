@@ -9,6 +9,8 @@ import Login from './screens/Login/Login.jsx';
 import NotFoundPage from './screens/NotFound/NotFoundPage.jsx';
 import { store } from './config/redux/stores/store.js';
 import { Provider } from 'react-redux';
+import CreateGuarantor from './screens/Loan/Loan.jsx';
+import Submission from './screens/Submission/Submission.jsx';
 
 // Route Configuration
 const route = createBrowserRouter([
@@ -27,6 +29,14 @@ const route = createBrowserRouter([
       {
         path: '/register', // Register page
         element: <Register />,
+      },
+      {
+        path: '/CreateGuarantor', // Register page
+        element: <CreateGuarantor />,
+      },
+      {
+        path: '/Submission', // Register page
+        element: <Submission />,
       },
       {
         path: '*', // Catch-all for undefined routes (NotFound)

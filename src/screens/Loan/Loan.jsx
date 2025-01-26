@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const CreateGuarantor = () => {
   const [formData, setFormData] = useState({
@@ -12,9 +13,12 @@ const CreateGuarantor = () => {
     branchCode: '',
     permissionAddress: '',
   });
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [guarantors, setGuarantors] = useState([]);
+  const [loanData, setLoanData] = useState(null); // New state for loan data
 
   const handleChange = (e) => {
     setFormData({
@@ -26,14 +30,35 @@ const CreateGuarantor = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Check if any fields are empty
     if (Object.values(formData).some((field) => field === '')) {
       setError('All fields are required');
       return;
     }
 
+    // Package bank details into an object
+    const bankDetails = {
+      bankName: formData.bankName,
+      accountNumber: formData.accountNumber,
+      branchCode: formData.branchCode,
+    };
+
+    const requestData = { ...formData, bankDetails }; // Include bank details in the request
+
     try {
-      const response = await axios.post('/api/guarantors', formData);
+      // Submit the form data to the backend
+      const response = await axios.post('http://localhost:5000/api/v1/guarantors', requestData);
       setSuccessMessage('Guarantor created successfully');
+
+      // Save data to localStorage
+      const existingData = JSON.parse(localStorage.getItem('guarantors')) || [];
+      existingData.push(formData);
+      localStorage.setItem('guarantors', JSON.stringify(existingData));
+
+      // Update guarantors state
+      setGuarantors(existingData);
+
+      // Clear form data
       setFormData({
         name: '',
         email: '',
@@ -45,11 +70,24 @@ const CreateGuarantor = () => {
         permissionAddress: '',
       });
       setError('');
+
+      navigate("/Submission");
+
     } catch (error) {
       setError('An error occurred while creating the guarantor');
       setSuccessMessage('');
     }
   };
+
+  useEffect(() => {
+    // Retrieve stored guarantors and loan data from localStorage when the component mounts
+    const storedGuarantors = JSON.parse(localStorage.getItem('guarantors')) || [];
+    setGuarantors(storedGuarantors);
+
+    // Assuming the loan data is stored in localStorage with the key 'loanData'
+    const storedLoanData = JSON.parse(localStorage.getItem('loanData'));
+    setLoanData(storedLoanData);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -127,12 +165,10 @@ const CreateGuarantor = () => {
               placeholder="Permission Address"
               className="w-full p-3 border rounded-lg"
             />
-          </div>
 
-          <div className="mt-6 text-center">
             <button
               type="submit"
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg"
+              className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700"
             >
               Create Guarantor
             </button>

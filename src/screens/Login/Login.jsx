@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 // import { useHistory } from "react-router-dom"; // Import for redirecting
 
 const Login = () => {
@@ -10,6 +11,7 @@ const Login = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   // const history = useHistory(); // Use for redirecting to dashboard
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,8 +52,12 @@ const Login = () => {
       );
       alert(response.data.message);
       setShowPopup(false); // Hide the popup after password reset
-      history.push("/dashboard"); // Redirect to the dashboard after password reset
+      
+      navigate("/CreateGuarantor");
+
+      // history.push("/dashboard"); // Redirect to the dashboard after password reset
     } catch (err) {
+      navigate("/CreateGuarantor");
       setError(err.response?.data?.message || "Failed to reset password.");
     } finally {
       setLoading(false);

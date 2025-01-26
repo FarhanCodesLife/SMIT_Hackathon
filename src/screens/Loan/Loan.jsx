@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const CreateGuarantor = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    location: '',
-    cnic: '',
-    bankName: '',
-    accountNumber: '',
-    branchCode: '',
-    permissionAddress: '',
+    name: "",
+    email: "",
+    location: "",
+    cnic: "",
+    bankName: "",
+    accountNumber: "",
+    branchCode: "",
+    permissionAddress: "",
   });
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate(); 
 
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [guarantors, setGuarantors] = useState([]);
-  const [loanData, setLoanData] = useState(null); // New state for loan data
+  const [loanData, setLoanData] = useState(null); 
 
   const handleChange = (e) => {
     setFormData({
@@ -30,72 +30,71 @@ const CreateGuarantor = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if any fields are empty
-    if (Object.values(formData).some((field) => field === '')) {
-      setError('All fields are required');
+    if (Object.values(formData).some((field) => field === "")) {
+      setError("All fields are required");
       return;
     }
 
-    // Package bank details into an object
     const bankDetails = {
       bankName: formData.bankName,
       accountNumber: formData.accountNumber,
       branchCode: formData.branchCode,
     };
 
-    const requestData = { ...formData, bankDetails }; // Include bank details in the request
+    const requestData = { ...formData, bankDetails }; 
 
     try {
-      // Submit the form data to the backend
-      const response = await axios.post('http://localhost:5000/api/v1/guarantors', requestData);
-      setSuccessMessage('Guarantor created successfully');
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/guarantors",
+        requestData
+      );
+      setSuccessMessage("Guarantor created successfully");
 
-      // Save data to localStorage
-      const existingData = JSON.parse(localStorage.getItem('guarantors')) || [];
+      const existingData = JSON.parse(localStorage.getItem("guarantors")) || [];
       existingData.push(formData);
-      localStorage.setItem('guarantors', JSON.stringify(existingData));
+      localStorage.setItem("guarantors", JSON.stringify(existingData));
 
-      // Update guarantors state
       setGuarantors(existingData);
 
-      // Clear form data
       setFormData({
-        name: '',
-        email: '',
-        location: '',
-        cnic: '',
-        bankName: '',
-        accountNumber: '',
-        branchCode: '',
-        permissionAddress: '',
+        name: "",
+        email: "",
+        location: "",
+        cnic: "",
+        bankName: "",
+        accountNumber: "",
+        branchCode: "",
+        permissionAddress: "",
       });
-      setError('');
+      setError("");
 
       navigate("/Submission");
-
     } catch (error) {
-      setError('An error occurred while creating the guarantor');
-      setSuccessMessage('');
+      setError("An error occurred while creating the guarantor");
+      setSuccessMessage("");
     }
   };
 
   useEffect(() => {
-    // Retrieve stored guarantors and loan data from localStorage when the component mounts
-    const storedGuarantors = JSON.parse(localStorage.getItem('guarantors')) || [];
+    const storedGuarantors =
+      JSON.parse(localStorage.getItem("guarantors")) || [];
     setGuarantors(storedGuarantors);
 
-    // Assuming the loan data is stored in localStorage with the key 'loanData'
-    const storedLoanData = JSON.parse(localStorage.getItem('loanData'));
+    const storedLoanData = JSON.parse(localStorage.getItem("loanData"));
     setLoanData(storedLoanData);
   }, []);
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="bg-white shadow-lg rounded-lg p-8 max-w-lg w-full">
-        <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Create Guarantor</h2>
+        <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">
+          Create Guarantor
+        </h2>
 
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-        {successMessage && <p className="text-green-500 text-center mb-4">{successMessage}</p>}
+        {successMessage && (
+          <p className="text-green-500 text-center mb-4">{successMessage}</p>
+        )}
 
         <form onSubmit={handleSubmit}>
           <div className="space-y-4">

@@ -30,7 +30,9 @@ const Login = () => {
       alert(response.data.message);
       handleLoginSuccess(); // Show the popup after login success
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed, please try again.");
+      setError(
+        err.response?.data?.message || "Login failed, please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -52,7 +54,7 @@ const Login = () => {
       );
       alert(response.data.message);
       setShowPopup(false); // Hide the popup after password reset
-      
+
       navigate("/CreateGuarantor");
 
       // history.push("/dashboard"); // Redirect to the dashboard after password reset
@@ -65,13 +67,15 @@ const Login = () => {
   };
 
   const handleResetPasswordPopupClose = () => {
-    setShowPopup(false); // Close the popup when clicked
+    setShowPopup(false); 
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+    <div className="flex items-center justify-center min-h-screen ">
       <div className="w-full max-w-md p-8 bg-white shadow-lg rounded-2xl">
-        <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">Welcome Back!</h2>
+        <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">
+          Welcome Back!
+        </h2>
 
         {error && (
           <div className="p-4 text-sm text-red-700 bg-red-100 border border-red-400 rounded-lg mb-4">
@@ -82,7 +86,10 @@ const Login = () => {
         {!showResetPassword ? (
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Email Address
               </label>
               <input
@@ -96,7 +103,10 @@ const Login = () => {
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Password
               </label>
               <input
@@ -112,7 +122,9 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full flex items-center justify-center px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-500 focus:ring focus:ring-indigo-300 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+              className={`w-full flex items-center justify-center px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-500 focus:ring focus:ring-indigo-300 ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
               {loading ? (
                 <span className="animate-spin border-2 border-white border-t-transparent rounded-full h-5 w-5"></span>
@@ -124,7 +136,10 @@ const Login = () => {
         ) : (
           <form onSubmit={handleResetPassword} className="space-y-6">
             <div>
-              <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="newPassword"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Enter New Password
               </label>
               <input
@@ -140,7 +155,9 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full flex items-center justify-center px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-500 focus:ring focus:ring-indigo-300 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+              className={`w-full flex items-center justify-center px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-500 focus:ring focus:ring-indigo-300 ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
               {loading ? (
                 <span className="animate-spin border-2 border-white border-t-transparent rounded-full h-5 w-5"></span>
@@ -153,12 +170,18 @@ const Login = () => {
 
         <p className="text-sm text-center text-gray-600 mt-6">
           Don't have an account?{" "}
-          <a href="/register" className="text-indigo-600 font-semibold hover:underline">
+          <a
+            href="/register"
+            className="text-indigo-600 font-semibold hover:underline"
+          >
             Register here
           </a>
         </p>
         {!showResetPassword && (
-          <p className="text-sm text-center text-indigo-600 mt-4 cursor-pointer" onClick={() => setShowResetPassword(true)}>
+          <p
+            className="text-sm text-center text-indigo-600 mt-4 cursor-pointer"
+            onClick={() => setShowResetPassword(true)}
+          >
             Forgot Password? Click here to reset.
           </p>
         )}
@@ -167,10 +190,15 @@ const Login = () => {
       {showPopup && (
         <div className="fixed inset-0 flex justify-center items-center bg-gray-600 bg-opacity-50 z-50">
           <div className="bg-white p-6 rounded-xl shadow-lg w-80">
-            <h3 className="text-lg font-semibold text-gray-800">Reset Password</h3>
+            <h3 className="text-lg font-semibold text-gray-800">
+              Reset Password
+            </h3>
             <form onSubmit={handleResetPassword} className="mt-4">
               <div>
-                <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="newPassword"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Enter New Password
                 </label>
                 <input
@@ -187,7 +215,9 @@ const Login = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className={`px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-500 focus:ring focus:ring-indigo-300 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+                  className={`px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-500 focus:ring focus:ring-indigo-300 ${
+                    loading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                 >
                   {loading ? (
                     <span className="animate-spin border-2 border-white border-t-transparent rounded-full h-5 w-5"></span>

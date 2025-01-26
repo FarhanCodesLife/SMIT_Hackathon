@@ -19,14 +19,18 @@ const Register = () => {
     setLoading(true);
     setError("");
     setSuccessMessage("");
-    
+
     try {
-      const response = await axios.post("http://localhost:5000/api/v1/register", formData);
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/register",
+        formData
+      );
       setSuccessMessage(response.data.message);
       setFormData({ name: "", email: "", cnic: "" });
-      // setTimeout(() => history.push("/login"), 2000); // Redirect to login after successful registration
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed, try again.");
+      setError(
+        err.response?.data?.message || "Registration failed, try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -35,12 +39,18 @@ const Register = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full sm:w-96">
-        <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Create Your Account</h2>
+        <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">
+          Create Your Account
+        </h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-        {successMessage && <p className="text-green-500 text-center mb-4">{successMessage}</p>}
+        {successMessage && (
+          <p className="text-green-500 text-center mb-4">{successMessage}</p>
+        )}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="name" className="block text-gray-700">Full Name</label>
+            <label htmlFor="name" className="block text-gray-700">
+              Full Name
+            </label>
             <input
               type="text"
               name="name"
@@ -52,7 +62,9 @@ const Register = () => {
             />
           </div>
           <div>
-            <label htmlFor="email" className="block text-gray-700">Email</label>
+            <label htmlFor="email" className="block text-gray-700">
+              Email
+            </label>
             <input
               type="email"
               name="email"
@@ -64,7 +76,9 @@ const Register = () => {
             />
           </div>
           <div>
-            <label htmlFor="cnic" className="block text-gray-700">CNIC</label>
+            <label htmlFor="cnic" className="block text-gray-700">
+              CNIC
+            </label>
             <input
               type="text"
               name="cnic"
@@ -85,7 +99,9 @@ const Register = () => {
         </form>
         <p className="mt-4 text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <a href="/login" className="text-blue-600 hover:text-blue-700">Login here</a>
+          <a href="/login" className="text-blue-600 hover:text-blue-700">
+            Login here
+          </a>
         </p>
       </div>
     </div>
